@@ -17,11 +17,12 @@ class GetProxiesSpider(scrapy.Spider):
                 yield req
 
     def main_parse(self, response, provider):
-        yield provider.get_proxies(response)
+        for item in provider.get_proxies(response):
+            yield item
         req = provider.get_next(response)
         if req:
+            req.callback = self.main_parse
             yield req
 
     def parse(self, response):
         pass
-
