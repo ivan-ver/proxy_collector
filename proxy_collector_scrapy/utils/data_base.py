@@ -29,19 +29,17 @@ class Database:
         if self._connection is None:
             self._connection = self._get_conn()
             self._cursor = self._connection.cursor()
-            print('connected')
 
     def disconnect(self):
         if self._connection is not None:
             self._connection.commit()
             self._connection.close()
-            print('disconnected')
+
 
     def truncate_proxy(self, table_name):
         sql = "TRUNCATE TABLE proxy.{}".format(table_name)
         self._cursor.execute(sql)
         self._connection.commit()
-        print('command truncate')
 
     @staticmethod
     def __clean_dict(item_dict):
@@ -49,9 +47,9 @@ class Database:
         return dict((k, v) for k, v in item_dict.items() if v)
 
     def save_proxy(self, items, table_name):
+        sql = """INSERT INTO proxy.{} VALUES (%s, %s, %s, %s)""".format(table_name)
         for item in items:
-            sql = """INSERT INTO proxy.{} VALUES (%s, %s, %s, %s)""".format(table_name)
-            self._cursor.execute(sql, (item['host'], item['port'], item['type'], item['ping']))
+            self._cursor.execute(sql, (item['host'], item['port'], item['_type'], item['ping']))
         self._connection.commit()
 
     def save_unchecked(self, items):
@@ -66,3 +64,4 @@ class Database:
 
     def truncate_checked(self):
         self.truncate_proxy('proxy_checked')
+
