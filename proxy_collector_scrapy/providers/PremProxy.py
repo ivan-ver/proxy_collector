@@ -10,10 +10,10 @@ class PremProxy(Provider):
     urls = ["http://premproxy.com/list/",
             "https://premproxy.com/socks-list"]
 
-    types_ = {'SOCKS4 ': 4,
-              'SOCKS5 ': 5,
-              'elite ': 1,
-              'anonymous ': 1
+    types_ = {'SOCKS4': 4,
+              'SOCKS5': 5,
+              'elite': 1,
+              'anonymous': 1
               }
 
     lua_script = Util.read_lua_script()
@@ -38,18 +38,13 @@ class PremProxy(Provider):
             return self.get_request(response.follow(next_page).url)
 
     def get_proxies(self, response):
-        ips = response.xpath("//table[@id='proxylistt']//tr/td[1]/text()").extract()[:-1]
-        ports = response.xpath("//table[@id='proxylistt']//tr/td[1]/span/text()").extract()
-        types = response.xpath("//table[@id='proxylistt']//tr/td[2]/text()").extract()
-
         proxies = list()
-        for i in range(len(ips)):
-            pi = ProxyItem()
-            if types[i] != 'transparent ':
-                pi['host'] = ips[i][:-1]
-                pi['port'] = int(ports[i])
-                pi['_type'] = self.types_[types[i]]
+        for row in response.xpath("//table[@id='proxylistt']/tbody/tr")[:-1]:
+            if row.xpath("td[2]/text()").get().strip() != 'transparent':
+                pi = ProxyItem()
+                pi['host'] = row.xpath("td[1]/text()").get()[:-1]
+                pi['port'] = row.xpath("td[1]/span/text()").get()
+                pi['_type'] = self.types_[row.xpath("td[2]/text()").get().strip()]
                 pi['ping'] = None
                 proxies.append(pi)
-
         return proxies
