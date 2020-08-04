@@ -65,3 +65,12 @@ class Database:
     def truncate_checked(self):
         self.truncate_proxy('proxy_checked')
 
+    def get_all_proxy(self):
+        self._cursor.execute("""
+            SELECT host, port FROM `proxy`.`proxy` order by ping
+        """)
+        return ['http://' + i['host'] + ':' + str(i['port']) for i in self._cursor.fetchall()]
+
+
+with Database() as db:
+    db.truncate_unchecked()
