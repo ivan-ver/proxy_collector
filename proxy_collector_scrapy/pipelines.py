@@ -8,7 +8,7 @@ from proxy_collector_scrapy.utils.data_base import Database
 
 
 class ProxyCollectorScrapyPipeline(object):
-    flush_count = 20
+    flush_count = 5
     items = set()
 
     def open_spider(self, spider):
@@ -16,6 +16,7 @@ class ProxyCollectorScrapyPipeline(object):
 
     def close_spider(self, spider):
         with Database() as db:
+            # db.truncate_unchecked()
             db.save_unchecked(self.items)
         # pass
 

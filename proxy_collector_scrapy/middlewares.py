@@ -6,6 +6,7 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from proxy_collector_scrapy.utils.db_proxy import DB_proxy
 
 
 class ProxyCollectorScrapySpiderMiddleware(object):
@@ -60,6 +61,13 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
+    proxy_list = None
+    current_proxy = None
+
+    def __init__(self):
+        with DB_proxy() as db:
+            self.proxy_list = db.get_all_proxy()
+            print()
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -71,7 +79,9 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     def process_request(self, request, spider):
         # Called for each request that goes through the downloader
         # middleware.
+        request.args = {'proxy': self.current_proxy}
 
+        print('proxy')
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object
@@ -82,17 +92,26 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
-
+        if response.status != 200:
+            print('proxy is changed 2')
+            self.proxy_list.append(self.current_proxy)
+            self.current_proxy = self.proxy_list.pop(0)
+            request.args = {'proxy': self.current_proxy}
+            return request
+        else:
+        # # Must either;
+            return response
         # Must either;
         # - return a Response object
         # - return a Request object
         # - or raise IgnoreRequest
-        return response
 
     def process_exception(self, request, exception, spider):
         # Called when a download handler or a process_request()
         # (from other downloader middleware) raises an exception.
-
+        print('proxy is changed')
+        self.proxy_list.append(self.current_proxy)
+        self.current_proxy = self.proxy_list.pop(0)
         # Must either:
         # - return None: continue processing this exception
         # - return a Response object: stops process_exception() chain
@@ -100,4 +119,5 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
         pass
 
     def spider_opened(self, spider):
+        self.current_proxy = self.proxy_list.pop(0)
         spider.logger.info('Spider opened: %s' % spider.name)
