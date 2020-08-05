@@ -10,7 +10,6 @@ import scrapy
 
 class ProxyItem(scrapy.Item):
     # define the fields for your item here like:
-
     host = scrapy.Field()
     port = scrapy.Field()
     _type = scrapy.Field()

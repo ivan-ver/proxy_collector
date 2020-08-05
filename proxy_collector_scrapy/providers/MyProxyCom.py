@@ -1,10 +1,9 @@
-from proxy_collector_scrapy.providers.Provider import Provider
-from scrapy import Request
+from scrapy_splash import SplashRequest
+
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
 from proxy_collector_scrapy.utils.util import Util
-from scrapy_splash import SplashRequest
-from scrapy.linkextractors import LinkExtractor
+
 
 class MyProxyCom(Provider):
     main_page = 'https://www.my-proxy.com/'

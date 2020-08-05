@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
+
 from proxy_collector_scrapy.providers.MyProxyCom import MyProxyCom
-from proxy_collector_scrapy.items import ProxyItem
+from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
 
 
 class GetProxiesSpider(scrapy.Spider):
