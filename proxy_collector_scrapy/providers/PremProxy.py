@@ -35,7 +35,9 @@ class PremProxy(Provider):
     def get_next(self, response):
         next_page = response.xpath("//div[@id='navbar'][1]//li/a[text()='next']/@href").get()
         if next_page:
-            return self.get_request(response.follow(next_page).url)
+            return self.get_request(self.urls[0] + next_page)
+        else:
+            return None
 
     def get_proxies(self, response):
         proxies = list()

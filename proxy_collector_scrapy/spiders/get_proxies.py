@@ -11,7 +11,7 @@ class GetProxiesSpider(scrapy.Spider):
     ]
 
     def start_requests(self):
-        for provider in self.__providers:
+        for provider in self.providers:
             for req in provider.get_requests():
                 req.callback = self.main_parse
                 yield req
