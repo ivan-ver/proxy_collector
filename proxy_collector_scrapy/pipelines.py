@@ -8,7 +8,7 @@ from proxy_collector_scrapy.utils.data_base import Database
 
 
 class ProxyCollectorScrapyPipeline(object):
-    flush_count = 5
+    flush_count = 50
     items = set()
 
     def open_spider(self, spider):
@@ -20,7 +20,6 @@ class ProxyCollectorScrapyPipeline(object):
         with Database() as db:
             db.save_unchecked(self.items)
 
-
     def process_item(self, item, spider):
         self.items.add(item)
         if len(self.items) > self.flush_count:
@@ -28,6 +27,3 @@ class ProxyCollectorScrapyPipeline(object):
                 db.save_unchecked(self.items)
             self.items.clear()
         return item
-
-
-

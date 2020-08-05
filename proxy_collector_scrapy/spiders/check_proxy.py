@@ -15,10 +15,10 @@ class CheckProxySpider(scrapy.Spider):
     def start_requests(self):
         for proxy in self.proxy_list:
             if proxy['type'] != 4:
-                pf = 'http://' + proxy['host']+':'+str(proxy['port'])
+                pf = 'https://' + proxy['host']+':'+str(proxy['port'])
+                print(pf)
                 yield Request(url=self.start_urls, meta={'proxy': pf})
-
 
     def parse(self, response):
         current_url = response.xpath("//body/text()")
-        print(current_url)
+        print("123" + current_url)

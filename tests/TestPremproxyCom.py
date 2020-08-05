@@ -1,6 +1,6 @@
 import unittest
 from scrapy.http import HtmlResponse
-from proxy_collector_scrapy.providers.PremProxy import PremProxy
+from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
 from proxy_collector_scrapy.items import ProxyItem
 import os
 WAY = os.path.dirname(__file__)
@@ -10,7 +10,7 @@ class TestPremProxy(unittest.TestCase):
     html_page = None
     next_page = None
     no_next_page = None
-    pp = PremProxy()
+    pp = PremproxyCom()
     p1 = ProxyItem()
     p2 = ProxyItem()
     p3 = ProxyItem()

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from proxy_collector_scrapy.providers.PremProxy import PremProxy
+from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
+from proxy_collector_scrapy.providers.MyProxyCom import MyProxyCom
 from proxy_collector_scrapy.items import ProxyItem
 
 
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
-        PremProxy(),
+        PremproxyCom(),
+        MyProxyCom()
     ]
 
     def start_requests(self):

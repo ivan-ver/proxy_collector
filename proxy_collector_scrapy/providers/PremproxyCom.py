@@ -1,4 +1,3 @@
-import scrapy_splash
 from scrapy_splash import SplashRequest
 
 from proxy_collector_scrapy.items import ProxyItem
@@ -6,7 +5,7 @@ from proxy_collector_scrapy.providers.Provider import Provider
 from proxy_collector_scrapy.utils.util import Util
 
 
-class PremProxy(Provider):
+class PremproxyCom(Provider):
     urls = ["http://premproxy.com/list/",
             "https://premproxy.com/socks-list"]
 
