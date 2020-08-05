@@ -5,7 +5,7 @@ from proxy_collector_scrapy.items import ProxyItem
 
 
 class GetProxiesSpider(scrapy.Spider):
-    name = 'proxy_unchecked'
+    name = 'get_unchecked'
     providers = [
         PremProxy(),
     ]

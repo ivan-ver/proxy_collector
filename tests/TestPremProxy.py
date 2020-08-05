@@ -1,12 +1,9 @@
 import unittest
-from scrapy.http import HtmlResponse, Response, Request
+from scrapy.http import HtmlResponse
 from proxy_collector_scrapy.providers.PremProxy import PremProxy
 from proxy_collector_scrapy.items import ProxyItem
 import os
-
-HTML_PAGE = os.path.join(os.path.dirname(__file__), 'html-files/page1.html')
-HTML_NEXT = os.path.join(os.path.dirname(__file__), 'html-files/page2.html')
-HTML_NOT_NEXT = os.path.join(os.path.dirname(__file__), 'html-files/page3.html')
+WAY = os.path.dirname(__file__)
 
 
 class TestPremProxy(unittest.TestCase):
@@ -19,7 +16,7 @@ class TestPremProxy(unittest.TestCase):
     p3 = ProxyItem()
 
     def setUp(self):
-        f = open(HTML_PAGE, 'rb')
+        f = open(WAY + '/html-files/page1.html', 'rb')
         text = f.read()
         f.close()
 
@@ -40,10 +37,9 @@ class TestPremProxy(unittest.TestCase):
         self.p3["_type"] = 1
         self.p3["ping"] = None
 
-        with open(HTML_NEXT, 'rb') as p:
+        with open(WAY + '/html-files/page2.html', 'rb') as p:
             self.next_page = HtmlResponse(url='', body=p.read())
-        print()
-        with open(HTML_NOT_NEXT, 'rb') as p:
+        with open(WAY + '/html-files/page3.html', 'rb') as p:
             self.no_next_page = HtmlResponse(url='', body=p.read())
 
     def test_get_proxies(self):
@@ -57,6 +53,7 @@ class TestPremProxy(unittest.TestCase):
         self.assertEqual(res_next_url.url, 'http://premproxy.com/list/02.htm')
         res_no_next_url = self.pp.get_next(self.no_next_page)
         self.assertEqual(res_no_next_url, None)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -47,7 +47,7 @@ class Database:
         return dict((k, v) for k, v in item_dict.items() if v)
 
     def save_proxy(self, items, table_name):
-        sql = """INSERT INTO proxy.{} VALUES (%s, %s, %s, %s)""".format(table_name)
+        sql = """INSERT IGNORE INTO proxy.{} VALUES (%s, %s, %s, %s)""".format(table_name)
         for item in items:
             self._cursor.execute(sql, (item['host'], item['port'], item['_type'], item['ping']))
         self._connection.commit()
@@ -71,6 +71,9 @@ class Database:
         """)
         return ['http://' + i['host'] + ':' + str(i['port']) for i in self._cursor.fetchall()]
 
+    def get_all_unchecked_proxy(self):
+        self._cursor.execute("""
+            SELECT host, port, type type FROM `proxy`.`proxy_unchecked`
+        """)
+        return self._cursor.fetchall()
 
-with Database() as db:
-    db.truncate_unchecked()
