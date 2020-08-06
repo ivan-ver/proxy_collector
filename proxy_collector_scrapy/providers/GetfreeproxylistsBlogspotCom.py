@@ -1,9 +1,10 @@
 from scrapy_splash import SplashRequest
-
+import re
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
 from proxy_collector_scrapy.utils.util import Util
 
+PATTERN = "([0-9]{1,3}[\.]){3}[0-9]{1,3}:[0-9]{2,}"
 
 class GetfreeproxylistsBlogspotCom(Provider):
     urls = ['https://getfreeproxylists.blogspot.com/']
@@ -35,10 +36,24 @@ class GetfreeproxylistsBlogspotCom(Provider):
             response.xpath("//div[@id='post-body-8318323332517554290']")]
 
         for block in blocks:
-            r = block.xpath("text()").extract()
-            print()
+            block_content = block.xpath("descendant-or-self::*/text()").extract()
+            current_type = None
+            for content in block_content:
+                if content == 'HTTP':
+                    current_type = 2
+                elif content == 'HTTPS':
+                    current_type = 3
+                elif content == 'SOCKS':
+                    current_type = 1
+                elif re.match(PATTERN, content):
+                    pi = ProxyItem()
+                    pi['host'] = content.split(':')[0]
+                    pi['port'] = content.split(':')[1]
+                    pi['_type'] = current_type
+                    pi['ping'] = None
+                    res.append(pi)
+        return res
 
-        pass
 
     def get_next(self, response):
         pass
