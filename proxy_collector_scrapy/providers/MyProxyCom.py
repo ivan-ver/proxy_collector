@@ -57,8 +57,8 @@ class MyProxyCom(Provider):
             pi['_type'] = current_type
             pi['ping'] = None
             result.append(pi)
-            yield pi
-        # return result
+            # yield pi
+        return result
 
     def get_next(self, response):
         return None

@@ -3,13 +3,15 @@ import scrapy
 
 from proxy_collector_scrapy.providers.MyProxyCom import MyProxyCom
 from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
+from proxy_collector_scrapy.providers.GetfreeproxylistsBlogspotCom import GetfreeproxylistsBlogspotCom
 
 
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
-        PremproxyCom(),
-        MyProxyCom()
+        # PremproxyCom(),
+        # MyProxyCom(),
+        GetfreeproxylistsBlogspotCom()
     ]
 
     def start_requests(self):
