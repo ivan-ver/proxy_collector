@@ -2,8 +2,8 @@ from abc import abstractmethod
 from scrapy_splash import SplashRequest
 from proxy_collector_scrapy.utils.util import Util
 
-class Provider:
 
+class Provider:
     lua_script = Util.read_lua_script()
 
     @abstractmethod

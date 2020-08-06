@@ -1,8 +1,5 @@
-from scrapy_splash import SplashRequest
-
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
-from proxy_collector_scrapy.utils.util import Util
 
 
 class PremproxyCom(Provider):
@@ -26,7 +23,6 @@ class PremproxyCom(Provider):
             return None
 
     def get_proxies(self, response):
-        proxies = list()
         for row in response.xpath("//table[@id='proxylistt']/tbody/tr")[:-1]:
             if row.xpath("td[2]/text()").get().strip() != 'transparent':
                 pi = ProxyItem()
@@ -34,5 +30,4 @@ class PremproxyCom(Provider):
                 pi['port'] = row.xpath("td[1]/span/text()").get()
                 pi['_type'] = self.types_[row.xpath("td[2]/text()").get().strip()]
                 pi['ping'] = None
-                proxies.append(pi)
-        return proxies
+                yield pi

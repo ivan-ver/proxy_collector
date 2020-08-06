@@ -10,9 +10,9 @@ from proxy_collector_scrapy.providers.OnlineProxyRu import OnlineProxyRu
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
-        PremproxyCom(),
-        MyProxyCom(),
-        GetfreeproxylistsBlogspotCom(),
+        # PremproxyCom(),
+        # MyProxyCom(),
+        # GetfreeproxylistsBlogspotCom(),
         OnlineProxyRu()
     ]
 

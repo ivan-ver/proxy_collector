@@ -1,5 +1,3 @@
-from scrapy_splash import SplashRequest
-
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
 from proxy_collector_scrapy.utils.util import Util
@@ -19,7 +17,6 @@ class OnlineProxyRu(Provider):
             yield super().get_request(url)
 
     def get_proxies(self, response):
-        result = []
         table = response.xpath("//td[@class='content']/table[1]/tbody/tr")[1:]
         for row in table:
             if row.xpath('td/text()').extract()[4] != 'прозрачный':
@@ -27,10 +24,8 @@ class OnlineProxyRu(Provider):
                 pi['host'] = row.xpath('td[2]/text()').get()
                 pi['port'] = row.xpath('td[3]/text()').get()
                 pi['_type'] = self.types[row.xpath('td[4]/text()').get()]
-                pi['ping'] = row.xpath('td[10]/text()').get()
-                result.append(pi)
-                # yield pi
-        return result
+                pi['ping'] = int(row.xpath('td[10]/text()').get())
+                yield pi
 
     def get_next(self, response):
         return None

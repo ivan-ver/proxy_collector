@@ -35,7 +35,7 @@ class TestMyProxyCom(unittest.TestCase):
         self.p3["ping"] = None
 
     def test_get_proxies(self):
-        res = self.pp.get_proxies(self.html_page)
+        res = [i for i in self.pp.get_proxies(self.html_page)]
         self.assertEqual(res[0], self.p1)
         self.assertEqual(res[1], self.p2)
         self.assertEqual(res[2], self.p3)

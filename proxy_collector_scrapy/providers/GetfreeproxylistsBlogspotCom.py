@@ -1,4 +1,3 @@
-from scrapy_splash import SplashRequest
 import re
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
@@ -15,7 +14,6 @@ class GetfreeproxylistsBlogspotCom(Provider):
             yield super().get_request(url)
 
     def get_proxies(self, response):
-        res = list()
         blocks = [response.xpath("//div[@id='post-body-8210650074430112200']"),
             response.xpath("//div[@id='post-body-1883764469148519908']"),
             response.xpath("//div[@id='post-body-4499055043126441170']"),
@@ -40,8 +38,8 @@ class GetfreeproxylistsBlogspotCom(Provider):
                     pi['port'] = content.split(':')[1]
                     pi['_type'] = current_type
                     pi['ping'] = None
-                    res.append(pi)
-        return res
+                    yield pi
+
 
     def get_next(self, response):
         pass
