@@ -16,7 +16,7 @@ class TestPremProxy(unittest.TestCase):
     p3 = ProxyItem()
 
     def setUp(self):
-        f = open(WAY + '/html-files/page1.html', 'rb')
+        f = open(WAY + '/html-files/PremProxyComGetReq.html', 'rb')
         text = f.read()
         f.close()
 
@@ -37,9 +37,9 @@ class TestPremProxy(unittest.TestCase):
         self.p3["_type"] = 1
         self.p3["ping"] = None
 
-        with open(WAY + '/html-files/page2.html', 'rb') as p:
+        with open(WAY + '/html-files/PremProxyComNextPage.html', 'rb') as p:
             self.next_page = HtmlResponse(url='', body=p.read())
-        with open(WAY + '/html-files/page3.html', 'rb') as p:
+        with open(WAY + '/html-files/PremProxyComNoNextPage.html', 'rb') as p:
             self.no_next_page = HtmlResponse(url='', body=p.read())
 
     def test_get_proxies(self):
