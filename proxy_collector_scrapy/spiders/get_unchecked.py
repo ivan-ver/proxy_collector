@@ -4,6 +4,7 @@ import scrapy
 from proxy_collector_scrapy.providers.MyProxyCom import MyProxyCom
 from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
 from proxy_collector_scrapy.providers.GetfreeproxylistsBlogspotCom import GetfreeproxylistsBlogspotCom
+from proxy_collector_scrapy.providers.OnlineProxyRu import OnlineProxyRu
 
 
 class GetProxiesSpider(scrapy.Spider):
@@ -11,7 +12,8 @@ class GetProxiesSpider(scrapy.Spider):
     providers = [
         PremproxyCom(),
         MyProxyCom(),
-        GetfreeproxylistsBlogspotCom()
+        GetfreeproxylistsBlogspotCom(),
+        OnlineProxyRu()
     ]
 
     def start_requests(self):

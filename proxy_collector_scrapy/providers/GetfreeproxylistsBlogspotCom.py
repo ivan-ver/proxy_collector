@@ -12,18 +12,7 @@ class GetfreeproxylistsBlogspotCom(Provider):
 
     def get_requests(self):
         for url in self.urls:
-            yield self.get_request(url)
-
-    def get_request(self, url):
-        return SplashRequest(
-            url=url,
-            endpoint='execute',
-            cache_args=['lua_source'],
-            args={
-                'lua_source': self.lua_script
-            },
-            cb_kwargs={'provider': self}
-        )
+            yield super().get_request(url)
 
     def get_proxies(self, response):
         res = list()
@@ -53,7 +42,6 @@ class GetfreeproxylistsBlogspotCom(Provider):
                     pi['ping'] = None
                     res.append(pi)
         return res
-
 
     def get_next(self, response):
         pass

@@ -12,24 +12,11 @@ class PremproxyCom(Provider):
     types_ = {'SOCKS4': 4,
               'SOCKS5': 5,
               'elite': 1,
-              'anonymous': 1
-              }
-
-    lua_script = Util.read_lua_script()
+              'anonymous': 1}
 
     def get_requests(self):
-        return [self.get_request(url) for url in self.urls]
-
-    def get_request(self, url):
-        return SplashRequest(
-            url=url,
-            endpoint='execute',
-            cache_args=['lua_source'],
-            args={
-                'lua_source': self.lua_script
-            },
-            cb_kwargs={'provider': self}
-        )
+        for url in self.urls:
+            yield super().get_request(url)
 
     def get_next(self, response):
         next_page = response.xpath("//div[@id='navbar'][1]//li/a[text()='next']/@href").get()
