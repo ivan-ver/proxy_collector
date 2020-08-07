@@ -1,6 +1,7 @@
 venv
 .idea
 __pycache__
+*.pyc
 
 test.py
 _trial_temp

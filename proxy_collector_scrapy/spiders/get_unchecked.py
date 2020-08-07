@@ -14,11 +14,11 @@ class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
         PremproxyCom(),
-        # MyProxyCom(),
-        # GetfreeproxylistsBlogspotCom(),
-        # OnlineProxyRu(),
-        # ProxypediaOrg(),
-        # FreeProxyListNet()
+        MyProxyCom(),
+        GetfreeproxylistsBlogspotCom(),
+        OnlineProxyRu(),
+        ProxypediaOrg(),
+        FreeProxyListNet()
     ]
 
     def start_requests(self):
