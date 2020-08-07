@@ -15,7 +15,7 @@ class ProxypediaOrg(Provider):
             pi = ProxyItem()
             pi['host'] = row.split(':')[0]
             pi['port'] = row.split(':')[1]
-            pi['_type'] = 1
+            pi['_type'] = None
             pi['ping'] = None
             yield pi
 

@@ -6,7 +6,7 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from proxy_collector_scrapy.utils.db_proxy import DB_proxy
+from proxy_collector_scrapy.utils.data_base import Database
 
 
 class ProxyCollectorScrapySpiderMiddleware(object):
@@ -61,13 +61,13 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
-    proxy_list = None
-    current_proxy = None
 
-    def __init__(self):
-        with DB_proxy() as db:
-            self.proxy_list = db.get_all_proxy()
-            print()
+    proxy_list = None
+    types = {
+        1: 'https://',
+        2: 'http://'
+    }
+    current_proxy = None
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -79,9 +79,7 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     def process_request(self, request, spider):
         # Called for each request that goes through the downloader
         # middleware.
-        request.args = {'proxy': self.current_proxy}
-
-        print('proxy')
+        # print('http://' + current_proxy['host'] + ':' + current_proxy['port'])
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object
@@ -92,15 +90,30 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
-        if response.status != 200:
-            print('proxy is changed 2')
-            self.proxy_list.append(self.current_proxy)
-            self.current_proxy = self.proxy_list.pop(0)
-            request.args = {'proxy': self.current_proxy}
-            return request
-        else:
-        # # Must either;
+        if spider.name == 'check_proxy':
             return response
+        # for p in self.proxy_list:
+        #     address = p['host'] + ':' + str(p['port'])
+        #     if p['type'] != 0 and p['type'] != 3 and p['type'] != 4 :
+        #         yield Request(url=self.start_urls,
+        #                       callback=self.check_parse,
+        #                       dont_filter=True,
+        #                       meta={'proxy': self.types[p['type']] + address,
+        #                             'download_timeout': 40},
+        #                       cb_kwargs={'proxy': p, 'type': p['type']}
+        #                       )
+        #     else:
+        #         for type in [1, 2]:
+        #             yield Request(url=self.start_urls,
+        #                           callback=self.check_parse,
+        #                           dont_filter=True,
+        #                           meta={'proxy': self.types[type] + address,
+        #                                 'download_timeout': 40},
+        #                           cb_kwargs={'proxy': p, 'type': type}
+        #                           )
+
+        # # Must either;
+
         # Must either;
         # - return a Response object
         # - return a Request object
@@ -109,15 +122,14 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     def process_exception(self, request, exception, spider):
         # Called when a download handler or a process_request()
         # (from other downloader middleware) raises an exception.
-        print('proxy is changed')
-        self.proxy_list.append(self.current_proxy)
-        self.current_proxy = self.proxy_list.pop(0)
         # Must either:
         # - return None: continue processing this exception
         # - return a Response object: stops process_exception() chain
         # - return a Request object: stops process_exception() chain
-        pass
+        return request
 
     def spider_opened(self, spider):
-        self.current_proxy = self.proxy_list.pop(0)
         spider.logger.info('Spider opened: %s' % spider.name)
+        if spider.name == 'check_proxy':
+            with Database() as db:
+                self.proxy_list = db.get_all_unchecked_proxy()

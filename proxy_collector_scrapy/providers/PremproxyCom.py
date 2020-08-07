@@ -6,10 +6,10 @@ class PremproxyCom(Provider):
     urls = ["http://premproxy.com/list/",
             "https://premproxy.com/socks-list"]
 
-    types_ = {'SOCKS4': 4,
-              'SOCKS5': 5,
-              'elite': 1,
-              'anonymous': 1}
+    types_ = {'SOCKS4': 3,
+              'SOCKS5': 4,
+              'elite': None,
+              'anonymous': None}
 
     def get_requests(self):
         for url in self.urls:

@@ -6,7 +6,7 @@ from proxy_collector_scrapy.utils.util import Util
 PATTERN = "([0-9]{1,3}[\.]){3}[0-9]{1,3}:[0-9]{2,}"
 
 class GetfreeproxylistsBlogspotCom(Provider):
-    urls = ['https://getfreeproxylists.blogspot.com/']
+    urls = ['https://getfreeproxylists.blogspot.com']
     lua_script = Util.read_lua_script()
 
     def get_requests(self):
@@ -27,11 +27,9 @@ class GetfreeproxylistsBlogspotCom(Provider):
             current_type = None
             for content in block_content:
                 if content == 'HTTP':
-                    current_type = 2
-                elif content == 'HTTPS':
-                    current_type = 3
-                elif content == 'SOCKS':
                     current_type = 1
+                elif content == 'HTTPS':
+                    current_type = 2
                 elif re.match(PATTERN, content):
                     pi = ProxyItem()
                     pi['host'] = content.split(':')[0]
@@ -39,7 +37,6 @@ class GetfreeproxylistsBlogspotCom(Provider):
                     pi['_type'] = current_type
                     pi['ping'] = None
                     yield pi
-
 
     def get_next(self, response):
         pass

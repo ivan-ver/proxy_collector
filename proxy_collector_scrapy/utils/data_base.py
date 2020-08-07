@@ -73,7 +73,7 @@ class Database:
 
     def get_all_unchecked_proxy(self):
         self._cursor.execute("""
-            SELECT host, port, type type FROM `proxy`.`proxy_unchecked`
+            SELECT host, port, type FROM `proxy`.`proxy_unchecked` WHERE type < 3
         """)
         return self._cursor.fetchall()
 

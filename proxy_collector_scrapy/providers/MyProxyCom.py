@@ -34,11 +34,9 @@ class MyProxyCom(Provider):
         result = []
         current_type = None
         if 'socks-5' in response.url:
-            current_type = 5
-        elif 'socks-4' in response.url:
             current_type = 4
-        else:
-            current_type = 1
+        elif 'socks-4' in response.url:
+            current_type = 3
         for p in response.xpath("//div[@class='list']/text()").extract():
             pi = ProxyItem()
             v = (p.split('#')[0]).split(':')

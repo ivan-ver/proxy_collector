@@ -7,9 +7,9 @@ class OnlineProxyRu(Provider):
     urls = ['http://online-proxy.ru']
     lua_script = Util.read_lua_script()
     types = {
-        'HTTP': 2,
-        'HTTPS': 3,
-        'HTTP/HTTPS': 3
+        'HTTP': 1,
+        'HTTPS': 2,
+        'HTTP/HTTPS': None
     }
 
     def get_requests(self):

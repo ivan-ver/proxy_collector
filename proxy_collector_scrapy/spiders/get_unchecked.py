@@ -5,6 +5,7 @@ from proxy_collector_scrapy.providers.MyProxyCom import MyProxyCom
 from proxy_collector_scrapy.providers.PremproxyCom import PremproxyCom
 from proxy_collector_scrapy.providers.GetfreeproxylistsBlogspotCom import GetfreeproxylistsBlogspotCom
 from proxy_collector_scrapy.providers.OnlineProxyRu import OnlineProxyRu
+from proxy_collector_scrapy.providers.FreeProxyListNet import FreeProxyListNet
 from proxy_collector_scrapy.providers.ProxypediaOrg import ProxypediaOrg
 
 
@@ -12,11 +13,12 @@ from proxy_collector_scrapy.providers.ProxypediaOrg import ProxypediaOrg
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
-        # PremproxyCom(),
+        PremproxyCom(),
         # MyProxyCom(),
         # GetfreeproxylistsBlogspotCom(),
         # OnlineProxyRu(),
-        ProxypediaOrg()
+        # ProxypediaOrg(),
+        # FreeProxyListNet()
     ]
 
     def start_requests(self):
