@@ -61,13 +61,7 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
-
     proxy_list = None
-    types = {
-        1: 'https://',
-        2: 'http://'
-    }
-    current_proxy = None
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -79,7 +73,12 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     def process_request(self, request, spider):
         # Called for each request that goes through the downloader
         # middleware.
-        # print('http://' + current_proxy['host'] + ':' + current_proxy['port'])
+        if spider.name == 'check_proxy':
+            if 'proxy' not in request.meta:
+                current_proxy = self.proxy_list.pop()
+                request.meta['proxy'] = 'https://' + current_proxy['host'] + ':' + str(current_proxy['port'])
+                print('proxy is add')
+                request.meta['download_timeout'] = 30
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object
@@ -90,30 +89,8 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
-        if spider.name == 'check_proxy':
-            return response
-        # for p in self.proxy_list:
-        #     address = p['host'] + ':' + str(p['port'])
-        #     if p['type'] != 0 and p['type'] != 3 and p['type'] != 4 :
-        #         yield Request(url=self.start_urls,
-        #                       callback=self.check_parse,
-        #                       dont_filter=True,
-        #                       meta={'proxy': self.types[p['type']] + address,
-        #                             'download_timeout': 40},
-        #                       cb_kwargs={'proxy': p, 'type': p['type']}
-        #                       )
-        #     else:
-        #         for type in [1, 2]:
-        #             yield Request(url=self.start_urls,
-        #                           callback=self.check_parse,
-        #                           dont_filter=True,
-        #                           meta={'proxy': self.types[type] + address,
-        #                                 'download_timeout': 40},
-        #                           cb_kwargs={'proxy': p, 'type': type}
-        #                           )
-
-        # # Must either;
-
+        # Must either;
+        return response
         # Must either;
         # - return a Response object
         # - return a Request object
@@ -122,11 +99,17 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
     def process_exception(self, request, exception, spider):
         # Called when a download handler or a process_request()
         # (from other downloader middleware) raises an exception.
+        if spider.name == 'check_proxy':
+            if 'https' in request.meta['proxy']:
+                request.meta['proxy'] = 'http://' + request.meta['proxy'].split('://')[1]
+                return request
+        return None
         # Must either:
         # - return None: continue processing this exception
         # - return a Response object: stops process_exception() chain
         # - return a Request object: stops process_exception() chain
-        return request
+
+
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
