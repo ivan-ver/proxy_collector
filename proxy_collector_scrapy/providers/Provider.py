@@ -4,6 +4,7 @@ from proxy_collector_scrapy.utils.util import Util
 
 
 class Provider:
+    PATTERN = "([0-9]{1,3}[\.]){3}[0-9]{1,3}:[0-9]{2,}"
     lua_script = Util.read_lua_script()
 
     @abstractmethod

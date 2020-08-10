@@ -3,7 +3,7 @@ from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
 from proxy_collector_scrapy.utils.util import Util
 
-PATTERN = "([0-9]{1,3}[\.]){3}[0-9]{1,3}:[0-9]{2,}"
+
 
 class GetfreeproxylistsBlogspotCom(Provider):
     urls = ['https://getfreeproxylists.blogspot.com']
@@ -30,7 +30,7 @@ class GetfreeproxylistsBlogspotCom(Provider):
                     current_type = 1
                 elif content == 'HTTPS':
                     current_type = 2
-                elif re.match(PATTERN, content):
+                elif re.match(super().PATTERN, content):
                     pi = ProxyItem()
                     pi['host'] = content.split(':')[0]
                     pi['port'] = content.split(':')[1]
