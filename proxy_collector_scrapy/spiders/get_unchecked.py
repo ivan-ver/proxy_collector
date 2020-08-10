@@ -7,18 +7,29 @@ from proxy_collector_scrapy.providers.GetfreeproxylistsBlogspotCom import Getfre
 from proxy_collector_scrapy.providers.OnlineProxyRu import OnlineProxyRu
 from proxy_collector_scrapy.providers.FreeProxyListNet import FreeProxyListNet
 from proxy_collector_scrapy.providers.ProxypediaOrg import ProxypediaOrg
+from proxy_collector_scrapy.providers.TwoIpRu import TwoIpRu
+from proxy_collector_scrapy.providers.FoxtoolsRu import FoxtoolsRu
+from proxy_collector_scrapy.providers.Ab57Ru import Ab57Ru
+from proxy_collector_scrapy.providers.ProxytrueTk import ProxytrueTk
 
 
 
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
-        PremproxyCom(),
-        MyProxyCom(),
-        GetfreeproxylistsBlogspotCom(),
-        OnlineProxyRu(),
-        ProxypediaOrg(),
-        FreeProxyListNet()
+        # PremproxyCom(),
+        # MyProxyCom(),
+        # GetfreeproxylistsBlogspotCom(),
+        # OnlineProxyRu(),
+        # ProxypediaOrg(),
+        # FreeProxyListNet(),
+        # SpysOne(),
+        # TwoIpRu(),
+        # FoxtoolsRu(),
+        # Ab57Ru(),
+        # FreeProxyCz(),
+        ProxytrueTk()
+
     ]
 
     def start_requests(self):

@@ -1,4 +1,3 @@
-from scrapy_splash import SplashRequest
 import re
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
