@@ -78,7 +78,7 @@ class ProxyCollectorScrapyDownloaderMiddleware(object):
                 current_proxy = self.proxy_list.pop()
                 request.meta['proxy'] = 'https://' + current_proxy['host'] + ':' + str(current_proxy['port'])
                 print('proxy is add')
-                request.meta['download_timeout'] = 45
+                request.meta['download_timeout'] = 25
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object

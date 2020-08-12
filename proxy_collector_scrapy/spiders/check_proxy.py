@@ -2,11 +2,11 @@ import scrapy
 from scrapy import Request
 from proxy_collector_scrapy.utils.data_base import Database
 from proxy_collector_scrapy.items import ProxyItem
-
+import re
 
 class CheckProxySpider(scrapy.Spider):
     name = 'check_proxy'
-    start_urls = ['http://ipinfo.io/ip/']
+    start_urls = ['https://api.myip.com']
     proxy_list = None
     types = {
         'http': 1,
@@ -24,13 +24,13 @@ class CheckProxySpider(scrapy.Spider):
                           dont_filter=True)
 
     def parse(self, response):
-        responsing_url = response.xpath("//text()").get()
+        response_proxy = re.findall("\\d+\.\d+\.\d+\.\d+", response.xpath("//text()").get())[0]
         using_proxy = response.meta['proxy']
         print(response.meta['proxy'])
-        print(response.xpath("//text()").get())
-        if responsing_url in using_proxy:
+        print(response_proxy)
+        if response_proxy in using_proxy:
             pi = ProxyItem()
-            pi['host'] = responsing_url
+            pi['host'] = response_proxy
             pi['port'] = using_proxy.split(':')[-1]
             pi['_type'] = self.types[using_proxy.split('://')[0]]
             pi['ping'] = None

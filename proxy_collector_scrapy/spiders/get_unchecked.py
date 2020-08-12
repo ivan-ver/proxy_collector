@@ -18,19 +18,17 @@ from proxy_collector_scrapy.providers.ProxylistdailyNet import ProxylistdailyNet
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
     providers = [
-        # PremproxyCom(),
-        # MyProxyCom(),
-        # GetfreeproxylistsBlogspotCom(),
-        # OnlineProxyRu(),
-        # ProxypediaOrg(),
-        # FreeProxyListNet(),
-        # SpysOne(),
-        # TwoIpRu(),
+        PremproxyCom(),
+        MyProxyCom(),
+        GetfreeproxylistsBlogspotCom(),
+        OnlineProxyRu(),
+        ProxypediaOrg(),
+        FreeProxyListNet(),
+        TwoIpRu(),
         FoxtoolsRu(),
-        # Ab57Ru(),
-        # FreeProxyCz(),
-        # ProxytrueTk(),
-        # ProxylistdailyNet()
+        Ab57Ru(),
+        ProxytrueTk(),
+        ProxylistdailyNet()
 
     ]
 
