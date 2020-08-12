@@ -1,22 +1,16 @@
 from proxy_collector_scrapy.items import ProxyItem
 from proxy_collector_scrapy.providers.Provider import Provider
-from proxy_collector_scrapy.utils.util import Util
 
 
 class FoxtoolsRu(Provider):
     main_url = 'http://foxtools.ru'
     urls = ['http://foxtools.ru/Proxy']
-    lua_script = Util.read_lua_script()
-    protocols = {'HTTP': 1,
-                 'HTTPS': 2}
     pages = None
     next_list_is_empty = True
-
 
     def get_requests(self):
         for url in self.urls:
             yield super().get_request(url)
-
 
     def get_proxies(self, response):
         table = response.xpath("//table[@id='theProxyList']/tbody/tr")
@@ -24,7 +18,7 @@ class FoxtoolsRu(Provider):
             pi = ProxyItem()
             pi['host'] = row.xpath('td[2]/text()').get()
             pi['port'] = row.xpath('td[3]/text()').get()
-            pi['_type'] = self.protocols[row.xpath('td[6]/text()').get().strip()]
+            pi['_type'] = super().protocols[row.xpath('td[6]/text()').get().strip().lower()]
             pi['ping'] = None
             yield pi
 

@@ -17,7 +17,6 @@ class CheckProxySpider(scrapy.Spider):
         with Database() as db:
             self.proxy_list = db.get_all_unchecked_proxy()
 
-
     def start_requests(self):
         for i in range(len(self.proxy_list)):
             yield Request(url=self.start_urls[0],

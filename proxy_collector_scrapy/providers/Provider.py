@@ -5,6 +5,12 @@ from proxy_collector_scrapy.utils.util import Util
 
 class Provider:
     PATTERN = "([0-9]{1,3}[\.]){3}[0-9]{1,3}:[0-9]{2,}"
+    protocols = {
+        'http': 1,
+        'https': 2,
+        'socs4': 3,
+        'socs': 4
+    }
     lua_script = Util.read_lua_script()
 
     @abstractmethod

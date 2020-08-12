@@ -11,6 +11,7 @@ from proxy_collector_scrapy.providers.TwoIpRu import TwoIpRu
 from proxy_collector_scrapy.providers.FoxtoolsRu import FoxtoolsRu
 from proxy_collector_scrapy.providers.Ab57Ru import Ab57Ru
 from proxy_collector_scrapy.providers.ProxytrueTk import ProxytrueTk
+from proxy_collector_scrapy.providers.ProxylistdailyNet import ProxylistdailyNet
 
 
 
@@ -25,10 +26,11 @@ class GetProxiesSpider(scrapy.Spider):
         # FreeProxyListNet(),
         # SpysOne(),
         # TwoIpRu(),
-        # FoxtoolsRu(),
+        FoxtoolsRu(),
         # Ab57Ru(),
         # FreeProxyCz(),
-        ProxytrueTk()
+        # ProxytrueTk(),
+        # ProxylistdailyNet()
 
     ]
 
