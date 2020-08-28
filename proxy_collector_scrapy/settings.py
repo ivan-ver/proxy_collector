@@ -9,7 +9,8 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-SPLASH_URL = 'http://192.168.1.140:8050'
+# SPLASH_URL = 'http://192.168.1.140:8050'
+SPLASH_URL = 'http://someapps.ru:8050'
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
@@ -51,13 +52,15 @@ DOWNLOAD_DELAY = 2
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
    # 'proxy_collector_scrapy.middlewares.ProxyCollectorScrapySpiderMiddleware': 543,
-   'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+
+   # 'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
 }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'proxy_collector_scrapy.middlewares.ProxyCollectorScrapyDownloaderMiddleware': 543,
+   # 'proxy_collector_scrapy.middlewares.ProxyCollectorScrapyDownloaderMiddleware': 543,
+   'proxy_collector_scrapy.middlewares.SOCKSProxyDownloaderMiddleware': 543,
    # 'scrapy_splash.SplashCookiesMiddleware': 723,
    # 'scrapy_splash.SplashMiddleware': 725,
    # 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,

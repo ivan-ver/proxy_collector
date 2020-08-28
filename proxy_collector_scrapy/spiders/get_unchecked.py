@@ -12,11 +12,25 @@ from proxy_collector_scrapy.providers.FoxtoolsRu import FoxtoolsRu
 from proxy_collector_scrapy.providers.Ab57Ru import Ab57Ru
 from proxy_collector_scrapy.providers.ProxytrueTk import ProxytrueTk
 from proxy_collector_scrapy.providers.ProxylistdailyNet import ProxylistdailyNet
+from proxy_collector_scrapy.providers.HideMyNameRu import HideMyNameRu
+from proxy_collector_scrapy.providers.MultiproxyOrg import MultiproxyOrg
+from proxy_collector_scrapy.providers.ApiProxyscrapeCom import ApiProxyscrapeCom
+from proxy_collector_scrapy.providers.RootjazzComParse import RootjazzComParse
+from proxy_collector_scrapy.providers.IpCn import IpCn
 
 
 
 class GetProxiesSpider(scrapy.Spider):
     name = 'get_unchecked'
+
+    custom_settings = {
+        'DOWNLOAD_DELAY': 0,
+        'DOWNLOAD_TIMEOUT': 10,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 20,
+        'CONCURRENT_REQUESTS_PER_IP': 20,
+        'CONCURRENT_REQUESTS': 20,
+    }
+
     providers = [
         PremproxyCom(),
         MyProxyCom(),
@@ -28,8 +42,12 @@ class GetProxiesSpider(scrapy.Spider):
         FoxtoolsRu(),
         Ab57Ru(),
         ProxytrueTk(),
-        ProxylistdailyNet()
-
+        ProxylistdailyNet(),
+        HideMyNameRu(),
+        MultiproxyOrg(),
+        ApiProxyscrapeCom(),
+        RootjazzComParse(),
+        IpCn()
     ]
 
     def start_requests(self):

@@ -1,0 +1,34 @@
+import re
+from proxy_collector_scrapy.items import ProxyItem
+from proxy_collector_scrapy.providers.Provider import Provider
+from proxy_collector_scrapy.utils.util import Util
+
+
+class RootjazzComParse(Provider):
+    urls = [
+        'http://rootjazz.com/proxies/proxies.txt'
+    ]
+    lua_script = Util.read_lua_script()
+
+    def get_requests(self):
+        for url in self.urls:
+            yield super().get_request(url)
+
+    def get_proxies(self, response):
+        proxy_list = response.text.split('\n')
+        for row in proxy_list:
+            row = row.strip()
+            try:
+                if re.match(super().PATTERN, row):
+                    pi = ProxyItem()
+                    pi['host'] = row.split(':')[0]
+                    pi['port'] = row.split(':')[1]
+                    pi['_type'] = 0
+                    pi['ping'] = None
+                    yield pi
+            except:
+                continue
+
+
+    def get_next(self, response):
+        return None

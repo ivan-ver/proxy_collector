@@ -19,7 +19,7 @@ class DB_proxy():
 
     def _get_conn(self):
         config = configparser.ConfigParser()
-        config.read('config/proxy_db.cfg')
+        config.read('config/app.cfg')
         if 'db_conn' not in config:
             print('db config error')  # TODO correct handling
             exit(1)

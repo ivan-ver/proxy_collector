@@ -8,7 +8,7 @@ from proxy_collector_scrapy.utils.data_base import Database
 
 
 class ProxyCollectorScrapyPipeline(object):
-    flush_count = 50
+    flush_count = 20
     items = set()
 
     def open_spider(self, spider):
@@ -20,19 +20,25 @@ class ProxyCollectorScrapyPipeline(object):
                 db.truncate_checked()
 
     def close_spider(self, spider):
-        with Database() as db:
-            db.save_unchecked(self.items)
+        if spider.name == 'get_unchecked':
+            with Database() as db:
+                db.save_unchecked(self.items)
+        elif spider.name == 'check_proxy':
+            with Database() as db:
+                db.save_checked(self.items)
 
     def process_item(self, item, spider):
         self.items.add(item)
         if spider.name == 'check_proxy':
-            if len(self.items) == 1:
+            if len(self.items) == self.flush_count:
                 with Database() as db:
                     db.save_checked(self.items)
                 self.items.clear()
+            return item
         else:
-            if len(self.items) > self.flush_count:
+            if len(self.items) == 50:
                 with Database() as db:
                     db.save_unchecked(self.items)
                 self.items.clear()
-        return item
+            return item
+

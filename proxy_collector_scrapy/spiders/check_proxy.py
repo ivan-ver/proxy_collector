@@ -6,6 +6,16 @@ import re
 
 class CheckProxySpider(scrapy.Spider):
     name = 'check_proxy'
+
+    custom_settings = {
+        'DOWNLOAD_DELAY': 1,
+        'DOWNLOAD_TIMEOUT': 15,
+        # 'CONCURRENT_REQUESTS_PER_DOMAIN': 50,
+        # 'CONCURRENT_REQUESTS_PER_IP': 50,
+        'CONCURRENT_REQUESTS': 50,
+    }
+
+
     start_urls = ['https://api.myip.com']
     proxy_list = None
     types = {

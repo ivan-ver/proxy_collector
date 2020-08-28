@@ -9,6 +9,9 @@ class Database:
     _connection = None
     _cursor = None
 
+    def __init__(self):
+        self.connect()
+
     def __enter__(self):
         self.connect()
         return self
@@ -52,8 +55,13 @@ class Database:
             self._cursor.execute(sql, (item['host'], item['port'], item['_type'], item['ping']))
         self._connection.commit()
 
+    def save_to_proxy_broker(self, items):
+        sql = """INSERT IGNORE INTO proxy.proxy_broker VALUES (%s, %s, %s)"""
+        for item in items:
+            self._cursor.execute(sql, (item['host'], item['port'], item['type']))
+        self._connection.commit()
+
     def save_unchecked(self, items):
-        print()
         self.save_proxy(items, 'proxy_unchecked')
 
     def save_checked(self, items):
@@ -73,7 +81,7 @@ class Database:
 
     def get_all_unchecked_proxy(self):
         self._cursor.execute("""
-            SELECT host, port, type FROM `proxy`.`proxy_unchecked` WHERE type < 3
+            SELECT host, port, type FROM `proxy`.`proxy_unchecked` WHERE type < 2
         """)
         return self._cursor.fetchall()
 
