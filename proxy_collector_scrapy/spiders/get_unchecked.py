@@ -25,14 +25,14 @@ class GetProxiesSpider(scrapy.Spider):
 
     custom_settings = {
         'DOWNLOAD_DELAY': 0,
-        'DOWNLOAD_TIMEOUT': 10,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 20,
-        'CONCURRENT_REQUESTS_PER_IP': 20,
-        'CONCURRENT_REQUESTS': 20,
+        # 'DOWNLOAD_TIMEOUT': 10,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 200,
+        'CONCURRENT_REQUESTS_PER_IP': 200,
+        'CONCURRENT_REQUESTS': 200,
     }
 
     providers = [
-        PremproxyCom(),
+        # PremproxyCom(),
         MyProxyCom(),
         GetfreeproxylistsBlogspotCom(),
         OnlineProxyRu(),

@@ -30,7 +30,7 @@ class ProxyCollectorScrapyPipeline(object):
     def process_item(self, item, spider):
         self.items.add(item)
         if spider.name == 'check_proxy':
-            if len(self.items) == self.flush_count:
+            if len(self.items) == 1:
                 with Database() as db:
                     db.save_checked(self.items)
                 self.items.clear()

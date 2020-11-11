@@ -8,15 +8,14 @@ class CheckProxySpider(scrapy.Spider):
     name = 'check_proxy'
 
     custom_settings = {
-        'DOWNLOAD_DELAY': 1,
-        'DOWNLOAD_TIMEOUT': 15,
-        # 'CONCURRENT_REQUESTS_PER_DOMAIN': 50,
-        # 'CONCURRENT_REQUESTS_PER_IP': 50,
-        'CONCURRENT_REQUESTS': 50,
+        'DOWNLOAD_DELAY': 0,
+        'DOWNLOAD_TIMEOUT': 30,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 200,
+        'CONCURRENT_REQUESTS_PER_IP': 200,
+        'CONCURRENT_REQUESTS': 400,
     }
 
-
-    start_urls = ['https://api.myip.com']
+    start_urls = ['https://www.google.ru']
     proxy_list = None
     types = {
         'http': 1,
@@ -33,14 +32,18 @@ class CheckProxySpider(scrapy.Spider):
                           callback=self.parse,
                           dont_filter=True)
 
+
     def parse(self, response):
-        response_proxy = re.findall("\\d+\.\d+\.\d+\.\d+", response.xpath("//text()").get())[0]
-        using_proxy = response.meta['proxy']
-        print(response.meta['proxy'])
-        print(response_proxy)
-        if response_proxy in using_proxy:
+        # response_proxy = 'abc'
+        # try:
+        #     response_proxy = re.findall("\\d+\.\d+\.\d+\.\d+", response.xpath("//text()").get())[0]
+        # except:
+        #     pass
+        # using_proxy = response.meta['proxy']
+        if response.status == 200:
+            using_proxy = response.meta['proxy']
             pi = ProxyItem()
-            pi['host'] = response_proxy
+            pi['host'] = (using_proxy.split('://')[-1]).split(':')[0]
             pi['port'] = using_proxy.split(':')[-1]
             pi['_type'] = self.types[using_proxy.split('://')[0]]
             pi['ping'] = None

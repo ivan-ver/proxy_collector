@@ -14,14 +14,7 @@ class GetfreeproxylistsBlogspotCom(Provider):
             yield super().get_request(url)
 
     def get_proxies(self, response):
-        blocks = [response.xpath("//div[@id='post-body-8210650074430112200']"),
-            response.xpath("//div[@id='post-body-1883764469148519908']"),
-            response.xpath("//div[@id='post-body-4499055043126441170']"),
-            response.xpath("//div[@id='post-body-5129256980014740999']"),
-            response.xpath("//div[@id='post-body-227127606125474560']"),
-            response.xpath("//div[@id='post-body-4685080276688808120']"),
-            response.xpath("//div[@id='post-body-8318323332517554290']")]
-
+        blocks = response.xpath("//div[@class='post-body entry-content']")
         for block in blocks:
             block_content = block.xpath("descendant-or-self::*/text()").extract()
             current_type = None
